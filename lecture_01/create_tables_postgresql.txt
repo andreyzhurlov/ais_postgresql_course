@@ -1,19 +1,19 @@
-create schema IF NOT EXISTS hr;
+create schema hr;
 
 
-CREATE TABLE IF NOT EXISTShr.regions (
+CREATE TABLE IF NOT EXISTS hr.regions (
     region_id SERIAL PRIMARY KEY,
     region_name VARCHAR(25)
 );
 
-CREATE TABLE IF NOT EXISTShr.countries (
+CREATE TABLE IF NOT EXISTS hr.countries (
     country_id CHAR(2) PRIMARY KEY,
     country_name VARCHAR(40),
     region_id INTEGER NOT NULL,
     FOREIGN KEY (region_id) REFERENCES hr.regions (region_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTShr.locations (
+CREATE TABLE IF NOT EXISTS hr.locations (
     location_id SERIAL PRIMARY KEY,
     street_address VARCHAR(40),
     postal_code VARCHAR(12),
@@ -23,21 +23,21 @@ CREATE TABLE IF NOT EXISTShr.locations (
     FOREIGN KEY (country_id) REFERENCES hr.countries (country_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTShr.departments (
+CREATE TABLE IF NOT EXISTS hr.departments (
     department_id SERIAL PRIMARY KEY,
     department_name VARCHAR(30) NOT NULL,
     location_id INTEGER,
     FOREIGN KEY (location_id) REFERENCES hr.locations (location_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTShr.jobs (
+CREATE TABLE IF NOT EXISTS hr.jobs (
     job_id SERIAL PRIMARY KEY,
     job_title VARCHAR(35) NOT NULL,
     min_salary NUMERIC(8, 2),
     max_salary NUMERIC(8, 2)
 );
 
-CREATE TABLE IF NOT EXISTShr.employees (
+CREATE TABLE IF NOT EXISTS hr.employees (
     employee_id SERIAL PRIMARY KEY,
     first_name VARCHAR(20),
     last_name VARCHAR(25) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTShr.employees (
     FOREIGN KEY (manager_id) REFERENCES hr.employees (employee_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTShr.dependents (
+CREATE TABLE IF NOT EXISTS hr.dependents (
     dependent_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
