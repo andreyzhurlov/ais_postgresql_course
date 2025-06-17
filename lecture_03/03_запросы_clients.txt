@@ -84,7 +84,23 @@ SELECT id, first_name, last_name, city
 FROM dev.clients
 ORDER BY city ASC, last_name ASC;
 
-
+--Возрастные группы
+SELECT
+    id,
+    first_name,
+    last_name,
+    birth_date,
+    EXTRACT(YEAR FROM AGE(CURRENT_DATE, date_of_birth)) AS age,
+    CASE
+        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) < 18 THEN 'menee 18'
+        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 18 AND 24 THEN '18 - 24'
+        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 25 AND 39 THEN '25 - 39'
+	WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 40 AND 55 THEN '40 - 55'
+        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 56 AND 70 THEN '56 - 70'
+        ELSE 'Pensioner'
+    END AS age_group
+FROM
+    dev.clients;
 -----------------------------------------------------------------------
 -- Задачи
 -----------------------------------------------------------------------
@@ -100,3 +116,6 @@ ORDER BY city ASC, last_name ASC;
 -- 4. Сортировка клиентов по городу в обратном алфавитном порядке, затем по дате рождения (младшие первыми)
 
 -- * 5. Вывести клиентов, отсортированных по длине их имени (от самых коротких к самым длинным)
+
+--CASE
+--Напишите запрос для определения - город клиента это Столица или Регион
