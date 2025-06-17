@@ -1,4 +1,4 @@
-create schema hr;
+create schema IF NOT EXISTS hr;
 
 
 CREATE TABLE IF NOT EXISTS hr.regions (
