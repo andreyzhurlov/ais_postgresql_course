@@ -90,7 +90,7 @@ SELECT
     first_name,
     last_name,
     birth_date,
-    EXTRACT(YEAR FROM AGE(CURRENT_DATE, date_of_birth)) AS age,
+    EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) AS age,
     CASE
         WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) < 18 THEN 'menee 18'
         WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 18 AND 24 THEN '18 - 24'
