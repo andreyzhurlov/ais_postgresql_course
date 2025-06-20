@@ -68,7 +68,23 @@ on t1.id  = t2.client_id
 where t2.order_date between '2025-01-01' and '2025-12-31';
 --where  EXTRACT(YEAR FROM t2.order_date) = 2025
 -- Задание 5: Найти города, из которых ниразу не дедали заказы
+-- Задание 5: Найти города, из которых ниразу не дедали заказы
 -- Podzapros
+select distinct t3.city
+from dev.clients t3
+where t3.city not in
+					(select distinct t1.city
+					from dev.clients t1
+					join dev.orders t2
+					on t1.id  = t2.client_id);
+
+
+
+
+
+
+
+
 -- Задание 6: Вывести клиентов, их город, из возраст, их возрастную группу (ранее решали),
 -- список всех товаров, которые они заказывали, дату заказа
 SELECT
