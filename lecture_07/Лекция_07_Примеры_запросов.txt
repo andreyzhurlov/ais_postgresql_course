@@ -119,113 +119,100 @@ JOIN hr.dependents d ON en.employee_id = d.employee_id;
 ---------------------------------------------------------------------------------
 -- Агрегации и группировки
 ---------------------------------------------------------------------------------
-
-
 -- 6
 select avg(salary),
-       max(salary),
-       min(salary),
-       sum(salary)
+      max(salary),
+      min(salary),
+      sum(salary)
 from   employees
-where  job_id like '%REP%';
-
+where  job_id = 9;
 -- 7
 select min(hire_date),
-       max(hire_date)
+      max(hire_date)
 from   employees;
-
+select *
+ from hr.employees e1
+ where e1.hire_date = (select min(e2.hire_date)
+						from   employees e2);
 -- 8
 select count(*)
 from   employees
-where  department_id = 50;
-
-select count(commission_pct)
-from   employees
-where  department_id = 50;
-
--- 9
-select count(distinct department_id)
-from   employees;
-
--- 10
-select avg(commission_pct)
-from   employees;
-
-select avg(coalesce(commission_pct, 0))
-from   employees;
-
+where  department_id = 5;
 -- 13
 select department_id,
-       avg(salary)
+      round(avg(salary),2) as round_avg_salary
 from   employees
 group  by department_id;
-
 -- 14
 select avg(salary)
 from   employees
 group  by department_id;
-
 -- 16
 select department_id,
-       job_id,
-       sum(salary)
+      job_id,
+      sum(salary)
 from   employees
-where  department_id > 40
+where  department_id > 4
 group  by department_id,
-          job_id
+         job_id
 order  by department_id;
-
 -- 17
 select department_id,
-       count(last_name)
+      count(last_name)
 from   employees;
-
 select department_id as dpt,
-       count(last_name)
+      count(last_name)
 from   employees
 group  by dpt;
-
 select department_id,
-       job_id,
-       count(last_name)
+      job_id,
+      count(last_name)
 from   employees
 group  by department_id;
-
 -- 18
 select department_id,
-       avg(salary)
+      avg(salary)
 from   employees
 where  avg(salary) > 8000
 group  by department_id;
-
+select department_id,
+      avg(salary)
+from   employees
+group  by department_id
+having  avg(salary) > 8000;
 -- 21
 select department_id,
-       max(salary)
+      max(salary)
 from   employees
 group  by department_id
 having max(salary) > 10000;
-
 -- 22
 select job_id,
-       sum(salary) PAYROLL
+      sum(salary) PAYROLL
 from   employees
-where  job_id not like '%REP%'
+where  job_id > 5
 group  by job_id
 having sum(salary) > 13000
 order  by payroll;
-
 select job_id,
-       sum(salary) PAYROLL
+      sum(salary) PAYROLL
 from   employees
-where  job_id not like '%REP%'
+where  job_id != 5
 group  by job_id
 having sum(salary) > 13000
 order  by sum(salary);
-
 -- 23
 select max(avg(salary))
 from   employees
 group  by department_id;
+with cte_avg_dep_salary as (
+	select department_id,
+		   avg(salary) as avg_savalry
+	  from employees
+	  group  by department_id	
+)
+select round(max(avg_savalry),2)
+ from cte_avg_dep_salary;
 
 
 
