@@ -1,0 +1,42 @@
+/*
+Задание 3: По каждому клиенту: Общее количество и сумма заказов, минимальная и максимальная дата заказа
++ Доп.информация с Фамилией и Именем клиента, а так же название города
++ Сортировка по Убыванию относительно суммы заказа
+*/
+select 	c.id as clientid,
+		concat(c.first_name, ' ', c.last_name) as client_name,
+		c.city,
+		count(o.order_id) order_qty,
+		sum(o.order_ammount) order_sum,
+		min(o.order_date) order_date_min,
+		max(o.order_date) order_date_max
+ from orders o
+ join clients c
+ on o.client_id  = c.id
+group by clientid,
+		 client_name,
+		 city
+order by order_sum desc;
+
+
+-- Задание 5: Общее количество, сумма заказов и среднее значение заказа, по возрастным группам
+-- в Порядке убывания по сумме заказов
+SELECT
+   CASE
+       WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) < 18 THEN 'menee 18'
+       WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 18 AND 24 THEN '18 - 24'
+       WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 25 AND 29 THEN '25 - 29'
+       WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 30 AND 39 THEN '30 - 39'
+		WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 40 AND 55 THEN '40 - 55'
+       WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, birth_date)) BETWEEN 56 AND 70 THEN '56 - 70'
+       ELSE 'Pensioner'
+   END AS age_group,
+   count(o.order_id) order_qty,
+	sum(o.order_ammount) order_sum,
+	round(avg(o.order_ammount), 2) order_avg
+from orders o
+join clients c
+ on o.client_id  = c.id
+group by age_group
+order by order_sum desc;
+
