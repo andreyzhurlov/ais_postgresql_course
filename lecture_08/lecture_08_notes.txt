@@ -40,3 +40,44 @@ join clients c
 group by age_group
 order by order_sum desc;
 
+
+
+
+-- Задание 2: Найти клиентов, у которых общая сумма заказов превышает 10000, и вывести их имя, фамилию, email и сумму заказов.
+-- + Сортировка по убыванию суммы заказа
+select 	c.id as clientid,
+		concat(c.first_name, ' ', c.last_name, ' [', c.email, ']') as client_info,
+		sum(o.order_ammount) order_sum
+ from orders o
+ join clients c
+ on o.client_id  = c.id
+group by clientid,
+		 client_info
+having sum(o.order_ammount) > 10000
+order by order_sum desc;
+
+-----------------------------------------------------------------------------
+-- GROUP BY + HAVING + CTE
+-----------------------------------------------------------------------------
+select  date_trunc('year', o.order_date) ,
+		extract(year from (o.order_date))
+from orders o
+
+-- Задание 1: Найти клиентов, которые за 2024 год сделали заказы на сумму более 10,000.
+-- Вывести имя, фамилию, город и сумму заказов.
+with cte_orders_2024 as (
+	select 	o.client_id ,
+			sum(o.order_ammount) order_sum
+	  from orders o
+	where extract(year from (o.order_date)) = 2024
+	group by o.client_id
+	having sum(o.order_ammount) > 10000
+)
+select 	o.client_id,
+		concat(c.first_name, ' ', c.last_name) as client_name,
+		c.city,
+		o.order_sum
+ from cte_orders_2024 o
+ join clients c
+   on o.client_id  = c.id;
+
